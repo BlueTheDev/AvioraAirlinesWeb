@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AvioraAirlines – Fliegen mit Stil</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --blue: #1a3a6b;
+    --sky: #1e6fb5;
+    --accent: #f5a623;
+    --gold: #e8941a;
+    --light: #f4f7fb;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --lightgray: #e5e9f0;
+    --red: #e53e3e;
+    --green: #22c55e;
+    --font-main: 'DM Sans', sans-serif;
+    --font-display: 'DM Serif Display', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-main); background: var(--white); color: var(--navy); overflow-x: hidden; }
+
+  /* ===== NAV ===== */
+  nav {
+    background: var(--navy);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+  .logo-text span { color: var(--accent); }
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    align-items: center;
+  }
+  nav ul a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--accent); }
+  .nav-btn {
+    background: var(--accent);
+    color: var(--navy) !important;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600 !important;
+  }
+  .nav-btn:hover { background: var(--gold); color: var(--navy) !important; }
+
+  /* ===== HERO BANNER SLIDER ===== */
+  .hero {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    display: flex;
+    align-items: center;
+  }
+  .slide.active { opacity: 1; }
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.55);
+  }
+  .slide-1 .slide-bg { background: linear-gradient(135deg, #0a2a5e 0%, #1a5276 40%, #0e3460 100%); }
+  .slide-2 .slide-bg { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%); }
+  .slide-3 .slide-bg { background: linear-gradient(135deg, #0d2137 0%, #1e5799 50%, #0a1628 100%); }
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 60px;
+    max-width: 700px;
+  }
+  .slide-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .slide-content h1 {
+    font-family: var(--font-display);
+    font-size: 48px;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  .slide-content p {
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .slide-cta {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--navy);
+    font-weight: 700;
+    padding: 13px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .slide-cta:hover { transform: translateY(-2px); background: var(--gold); }
+  .slide-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .dot.active { background: var(--accent); }
+
+  /* Plane decoration */
+  .hero-plane {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 160px;
+    opacity: 0.08;
+    z-index: 1;
+    animation: planefloat 4s ease-in-out infinite;
+  }
+  @keyframes planefloat {
+    0%,100% { transform: translateY(-50%) rotate(-5deg); }
+    50% { transform: translateY(-55%) rotate(-3deg); }
+  }
+
+  /* ===== SEARCH BOX ===== */
+  .search-section {
+    background: var(--light);
+    padding: 0;
+    position: relative;
+  }
+  .search-box {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    padding: 28px 32px;
+    max-width: 1100px;
+    margin: -50px auto 0;
+    position: relative;
+    z-index: 10;
+  }
+  .search-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+  .stab {
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    background: var(--light);
+    color: var(--gray);
+    transition: all 0.2s;
+  }
+  .stab.active {
+    background: var(--navy);
+    color: var(--white);
+  }
+  .search-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  .search-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+  .search-field input, .search-field select {
+    width: 100%;
+    border: 1.5px solid var(--lightgray);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: var(--font-main);
+    color: var(--navy);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-field input:focus, .search-field select:focus {
+    border-color: var(--sky);
+  }
+  .search-btn {
+    background: var(--accent);
+    color: var(--navy);
+    border: none;
+    border-radius: 10px;
+    padding: 13px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .search-btn:hover { background: var(--gold); transform: translateY(-1px); }
+
+  /* ===== PROMO BANNERS ===== */
+  .promo-strip {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .promo-strip span { color: var(--accent); font-weight: 700; }
+
+  .banners-section {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+  .banners-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .banner {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .banner:hover { transform: scale(1.01); }
+  .banner-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+  }
+  .b1 .banner-bg { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #f39c12 100%); }
+  .b2 .banner-bg { background: linear-gradient(135deg, #1a3a6b 0%, #2980b9 100%); }
+  .b3 .banner-bg { background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%); }
+  .b4 .banner-bg { background: linear-gradient(135deg, #6c3483 0%, #8e44ad 100%); }
+  .banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+  }
+  .banner-content { position: relative; z-index: 2; }
+  .banner-content .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .banner-content h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .banner-content p {
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+  }
+  .banner-price {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 8px 14px;
+    text-align: center;
+    z-index: 2;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .banner-price .from { color: rgba(255,255,255,0.7); font-size: 10px; }
+  .banner-price .amount { color: white; font-size: 20px; font-weight: 700; }
+  .banner-price .currency { color: var(--accent); font-size: 11px; }
+
+  .banners-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ===== SECTION TITLES ===== */
+  .section-title {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .section-title h2 {
+    font-family: var(--font-display);
+    font-size: 34px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .section-title p {
+    color: var(--gray);
+    font-size: 15px;
+  }
+
+  /* ===== FLIGHTS SECTION ===== */
+  .flights-section {
+    background: var(--light);
+    padding: 60px 20px;
+  }
+  .flights-inner { max-width: 1100px; margin: 0 auto; }
+
+  .flight-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ffilter {
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: 1.5px solid var(--lightgray);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: var(--font-main);
+    color: var(--gray);
+    transition: all 0.2s;
+  }
+  .ffilter.active {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+  }
+
+  .flights-grid {
+    display: grid;
+    gap: 14px;
+  }
+  .flight-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s, transform 0.2s;
+    border: 1.5px solid var(--lightgray);
+  }
+  .flight-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+    border-color: var(--sky);
+  }
+  .airline-logo {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .flight-times {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .time-block { text-align: center; }
+  .time-block .time {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .time-block .airport {
+    font-size: 12px;
+    color: var(--gray);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+  .time-block .city {
+    font-size: 11px;
+    color: var(--lightgray);
+    color: #aaa;
+  }
+  .flight-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 120px;
+  }
+  .flight-duration {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .flight-line-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+  }
+  .line-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--sky);
+    flex-shrink: 0;
+  }
+  .line-dash {
+    flex: 1;
+    height: 1.5px;
+    background: var(--lightgray);
+    position: relative;
+  }
+  .line-plane { font-size: 12px; }
+  .flight-stop {
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .flight-class-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .class-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--lightgray);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .class-badge:hover { border-color: var(--sky); }
+  .class-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    min-width: 80px;
+  }
+  .class-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--sky);
+  }
+  .class-currency { font-size: 10px; color: var(--gray); }
+  .book-btn {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .book-btn:hover { background: var(--sky); }
+  .flight-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  .ftag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .ftag-green { background: #d1fae5; color: #065f46; }
+  .ftag-blue { background: #dbeafe; color: #1e40af; }
+  .ftag-orange { background: #fef3c7; color: #92400e; }
+
+  .july-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Total price bar */
+  .total-bar {
+    background: linear-gradient(90deg, var(--navy), var(--blue));
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .total-bar .label { color: rgba(255,255,255,0.75); font-size: 12px; }
+  .total-bar .price { color: var(--accent); font-size: 18px; font-weight: 700; }
+
+  /* ===== CLASSES INFO ===== */
+  .classes-section {
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .classes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .class-card {
+    border-radius: 16px;
+    padding: 28px 22px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .class-card:hover { transform: translateY(-4px); }
+  .cc-eco { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 1.5px solid #bae6fd; }
+  .cc-ecop { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1.5px solid #bbf7d0; }
+  .cc-biz { background: linear-gradient(135deg, #fefce8, #fef3c7); border: 1.5px solid #fde68a; }
+  .cc-first { background: linear-gradient(135deg, var(--navy), var(--blue)); border: 1.5px solid var(--sky); }
+  .class-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  .cc-eco h3, .cc-ecop h3, .cc-biz h3 { color: var(--navy); }
+  .cc-first h3 { color: var(--white); }
+  .class-card p { font-size: 13px; color: var(--gray); line-height: 1.5; margin-bottom: 14px; }
+  .cc-first p { color: rgba(255,255,255,0.75); }
+  .class-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--navy);
+  }
+  .cc-first .class-feature { color: rgba(255,255,255,0.9); }
+  .class-icon { font-size: 32px; margin-bottom: 12px; }
+
+  /* ===== AIRPORTS ===== */
+  .airports-section {
+    background: var(--light);
+    padding: 60px 20px;
+  }
+  .airports-inner { max-width: 1100px; margin: 0 auto; }
+  .airports-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .country-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1.5px solid var(--lightgray);
+  }
+  .country-header {
+    padding: 16px 18px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--lightgray);
+  }
+  .country-flag { font-size: 28px; }
+  .country-name { font-weight: 700; font-size: 15px; color: var(--navy); }
+  .airport-list { padding: 12px 18px; }
+  .airport-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--lightgray);
+    font-size: 13px;
+  }
+  .airport-item:last-child { border-bottom: none; }
+  .airport-name { font-weight: 500; color: var(--navy); }
+  .airport-code {
+    background: var(--navy);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== BOOKING MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 620px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    padding: 24px 30px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h2 {
+    font-family: var(--font-display);
+    color: var(--white);
+    font-size: 22px;
+  }
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: var(--white);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.3); }
+  .modal-body { padding: 30px; }
+  .flight-summary-box {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    border: 1.5px solid var(--lightgray);
+  }
+  .flight-summary-box h3 { font-size: 14px; color: var(--gray); margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .flight-summary-route {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .modal-step {
+    display: none;
+  }
+  .modal-step.active { display: block; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+  .form-group input, .form-group select {
+    width: 100%;
+    border: 1.5px solid var(--lightgray);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: var(--font-main);
+    color: var(--navy);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--sky); }
+  .form-group.full { grid-column: 1/-1; }
+  .step-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn-back {
+    background: var(--light);
+    color: var(--navy);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-main);
+  }
+  .btn-next {
+    background: var(--accent);
+    color: var(--navy);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-main);
+    flex: 1;
+    transition: background 0.2s;
+  }
+  .btn-next:hover { background: var(--gold); }
+  .step-indicator {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--lightgray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray);
+  }
+  .step-dot.done { background: var(--green); color: var(--white); }
+  .step-dot.active { background: var(--navy); color: var(--white); }
+  .step-line { flex: 1; height: 2px; background: var(--lightgray); }
+  .step-line.done { background: var(--green); }
+  .price-breakdown {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 5px 0;
+    color: var(--gray);
+  }
+  .price-row.total {
+    border-top: 1.5px solid var(--lightgray);
+    margin-top: 8px;
+    padding-top: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 18px;
+  }
+  .price-row .amount { color: var(--navy); font-weight: 600; }
+  .price-row.total .amount { color: var(--sky); font-size: 22px; }
+  .success-screen {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-screen .tick { font-size: 60px; }
+  .success-screen h3 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--navy);
+    margin: 12px 0 8px;
+  }
+  .success-screen p { color: var(--gray); font-size: 14px; line-height: 1.6; }
+  .booking-ref {
+    background: var(--navy);
+    color: var(--accent);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: inline-block;
+    margin: 16px 0;
+    font-family: monospace;
+  }
+
+  /* ===== EXTRAS SECTION ===== */
+  .extras-section {
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .extra-card {
+    text-align: center;
+    padding: 24px 18px;
+    border-radius: 14px;
+    background: var(--white);
+    border: 1.5px solid var(--lightgray);
+    transition: all 0.2s;
+  }
+  .extra-card:hover { border-color: var(--sky); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .extra-icon { font-size: 36px; margin-bottom: 12px; }
+  .extra-card h4 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .extra-card p { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* ===== SEARCH RESULTS ===== */
+  #search-results {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: none;
+  }
+  #search-results.show { display: block; }
+  .sr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--lightgray);
+  }
+  .sr-header h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--navy);
+  }
+  .sr-count { color: var(--gray); font-size: 14px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    padding: 50px 40px 24px;
+    margin-top: 60px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+  }
+  .footer-brand .logo { margin-bottom: 14px; }
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; }
+  .footer-col h4 { color: var(--white); font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.65); font-size: 13px; margin-bottom: 8px; text-decoration: none; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-bottom span { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .search-row { grid-template-columns: 1fr 1fr; }
+    .airports-grid { grid-template-columns: repeat(2, 1fr); }
+    .classes-grid { grid-template-columns: repeat(2, 1fr); }
+    .extras-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .banners-grid { grid-template-columns: 1fr; }
+    .flight-card { grid-template-columns: auto 1fr; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 0 16px; }
+    nav ul { gap: 14px; }
+    .slide-content h1 { font-size: 30px; }
+    .search-row { grid-template-columns: 1fr; }
+    .airports-grid { grid-template-columns: 1fr; }
+    .classes-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .banners-row2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PROMO STRIP -->
+<div class="promo-strip">
+  🎉 Sonderangebot: Türkei Hin & Zurück ab <span>R$ 529,98</span> · Nur für begrenzte Zeit · <span>Code: AVIORA10</span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">✈</div>
+    <div class="logo-text">Aviora<span>Airlines</span></div>
+  </a>
+  <ul>
+    <li><a href="#flights">Flüge</a></li>
+    <li><a href="#airports">Flughäfen</a></li>
+    <li><a href="#classes">Klassen</a></li>
+    <li><a href="#">Angebote</a></li>
+    <li><a href="#">Info</a></li>
+    <li><a href="#" class="nav-btn">Einloggen</a></li>
+  </ul>
+</nav>
+
+<!-- HERO SLIDER -->
+<section class="hero">
+  <div class="slide slide-1 active">
+    <div class="slide-bg"></div>
+    <div class="hero-plane">✈</div>
+    <div class="slide-content">
+      <span class="slide-badge">🔥 Sommerdeal 2026</span>
+      <h1>Türkei wartet auf dich</h1>
+      <p>Antalya, Istanbul, Bodrum – entdecke das Land zwischen Orient und Okzident. Direkte Flüge ab Frankfurt.</p>
+      <a href="#search" class="slide-cta">Jetzt buchen</a>
+    </div>
+  </div>
+  <div class="slide slide-2">
+    <div class="slide-bg"></div>
+    <div class="hero-plane">✈</div>
+    <div class="slide-content">
+      <span class="slide-badge">⭐ Empfohlen</span>
+      <h1>Griechenland – Sonne & Meer</h1>
+      <p>Athen, Thessaloniki, Kreta – der perfekte Mittelmeerurlaub. Günstige Tarife für den ganzen Sommer.</p>
+      <a href="#search" class="slide-cta">Flüge suchen</a>
+    </div>
+  </div>
+  <div class="slide slide-3">
+    <div class="slide-bg"></div>
+    <div class="hero-plane">✈</div>
+    <div class="slide-content">
+      <span class="slide-badge">✨ Business Klasse</span>
+      <h1>Fliegen wie nie zuvor</h1>
+      <p>Erlebe Business Class mit AvioraAirlines – liegeflachen Sitzen, Premium-Dining und persönlichem Service.</p>
+      <a href="#classes" class="slide-cta">Klassen entdecken</a>
+    </div>
+  </div>
+  <div class="slide-dots">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+  </div>
+</section>
+
+<!-- SEARCH BOX -->
+<section class="search-section" id="search">
+  <div class="search-box">
+    <div class="search-tabs">
+      <button class="stab active" onclick="setTab(this,'roundtrip')">↔ Hin & Zurück</button>
+      <button class="stab" onclick="setTab(this,'oneway')">→ Nur Hinflug</button>
+      <button class="stab" onclick="setTab(this,'multi')">✦ Mehrfach</button>
+    </div>
+    <div class="search-row">
+      <div class="search-field">
+        <label>Von</label>
+        <select id="fromAirport">
+          <option value="">Abflugort wählen</option>
+          <option value="FRA">Frankfurt (FRA)</option>
+          <option value="MUC">München (MUC)</option>
+          <option value="BER">Berlin (BER)</option>
+          <option value="HAM">Hamburg (HAM)</option>
+          <option value="DUS">Düsseldorf (DUS)</option>
+          <option value="CGN">Köln/Bonn (CGN)</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Nach</label>
+        <select id="toAirport">
+          <option value="">Zielort wählen</option>
+          <optgroup label="🇹🇷 Türkei">
+            <option value="SAW">Istanbul Sabiha (SAW)</option>
+            <option value="IST">Istanbul Atatürk (IST)</option>
+            <option value="AYT">Antalya (AYT)</option>
+            <option value="BJV">Bodrum (BJV)</option>
+            <option value="ADB">Izmir (ADB)</option>
+          </optgroup>
+          <optgroup label="🇩🇪 Deutschland">
+            <option value="FRA">Frankfurt (FRA)</option>
+            <option value="MUC">München (MUC)</option>
+            <option value="BER">Berlin (BER)</option>
+            <option value="HAM">Hamburg (HAM)</option>
+          </optgroup>
+          <optgroup label="🇬🇧 England">
+            <option value="LHR">London Heathrow (LHR)</option>
+            <option value="LGW">London Gatwick (LGW)</option>
+            <option value="STN">London Stansted (STN)</option>
+            <option value="MAN">Manchester (MAN)</option>
+          </optgroup>
+          <optgroup label="🇧🇬 Bulgarien">
+            <option value="SOF">Sofia (SOF)</option>
+            <option value="VAR">Varna (VAR)</option>
+            <option value="BOJ">Burgas (BOJ)</option>
+            <option value="PDV">Plovdiv (PDV)</option>
+          </optgroup>
+          <optgroup label="🇬🇷 Griechenland">
+            <option value="ATH">Athen (ATH)</option>
+            <option value="SKG">Thessaloniki (SKG)</option>
+            <option value="HER">Heraklion Kreta (HER)</option>
+            <option value="RHO">Rhodos (RHO)</option>
+            <option value="CFU">Korfu (CFU)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Hinflug</label>
+        <input type="date" id="departDate" min="2026-04-16">
+      </div>
+      <div class="search-field">
+        <label>Passagiere</label>
+        <select id="passengerCount">
+          <option value="1">1 Erwachsener</option>
+          <option value="2">2 Erwachsene</option>
+          <option value="3">3 Personen</option>
+          <option value="4">4 Personen</option>
+          <option value="5">5+ Personen</option>
+        </select>
+      </div>
+      <button class="search-btn" onclick="searchFlights()">
+        🔍 Suchen
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH RESULTS -->
+<div id="search-results">
+  <div class="sr-header">
+    <div>
+      <h2 id="results-title">Suchergebnisse</h2>
+      <div class="sr-count" id="results-count"></div>
+    </div>
+    <div class="flight-filters">
+      <button class="ffilter active" onclick="filterFlights('all',this)">Alle</button>
+      <button class="ffilter" onclick="filterFlights('economy',this)">Economy</button>
+      <button class="ffilter" onclick="filterFlights('economy+',this)">Economy+</button>
+      <button class="ffilter" onclick="filterFlights('business',this)">Business</button>
+    </div>
+  </div>
+  <div class="flights-grid" id="results-grid"></div>
+</div>
+
+<!-- PROMO BANNERS -->
+<div class="banners-section">
+  <div class="section-title">
+    <h2>Unsere besten Deals</h2>
+    <p>Sonderangebote und Aktionen – jetzt buchen und sparen</p>
+  </div>
+  <div class="banners-grid">
+    <div class="banner b1">
+      <div class="banner-bg"></div>
+      <div class="banner-overlay"></div>
+      <div class="banner-price">
+        <div class="from">ab nur</div>
+        <div class="amount">279<small>,99</small></div>
+        <div class="currency">R$ p.P.</div>
+      </div>
+      <div class="banner-content">
+        <span class="tag">🔥 Sommer-Hit</span>
+        <h3>Türkei<br>Sommerspecial</h3>
+        <p>Antalya · Istanbul · Bodrum · Izmir</p>
+      </div>
+    </div>
+    <div class="banner b2">
+      <div class="banner-bg"></div>
+      <div class="banner-overlay"></div>
+      <div class="banner-price">
+        <div class="from">ab nur</div>
+        <div class="amount">189<small>,99</small></div>
+        <div class="currency">R$ p.P.</div>
+      </div>
+      <div class="banner-content">
+        <span class="tag">⭐ Beliebt</span>
+        <h3>Griechenland<br>Escape</h3>
+        <p>Athen · Rhodos · Kreta · Korfu</p>
+      </div>
+    </div>
+  </div>
+  <div class="banners-row2">
+    <div class="banner b3" style="min-height:140px">
+      <div class="banner-bg"></div>
+      <div class="banner-overlay"></div>
+      <div class="banner-price">
+        <div class="from">ab nur</div>
+        <div class="amount">149<small>,99</small></div>
+        <div class="currency">R$ p.P.</div>
+      </div>
+      <div class="banner-content">
+        <span class="tag">💎 Deal</span>
+        <h3>Bulgarien &amp; mehr</h3>
+        <p>Sofia · Varna · Burgas · Plovdiv</p>
+      </div>
+    </div>
+    <div class="banner b4" style="min-height:140px">
+      <div class="banner-bg"></div>
+      <div class="banner-overlay"></div>
+      <div class="banner-price">
+        <div class="from">ab nur</div>
+        <div class="amount">219<small>,99</small></div>
+        <div class="currency">R$ p.P.</div>
+      </div>
+      <div class="banner-content">
+        <span class="tag">🇬🇧 UK Flights</span>
+        <h3>London &amp; England</h3>
+        <p>Heathrow · Gatwick · Stansted · Manchester</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED FLIGHTS -->
+<section class="flights-section" id="flights">
+  <div class="flights-inner">
+    <div class="section-title">
+      <h2>Aktuelle Flüge</h2>
+      <p>Direkte Verbindungen – täglich verfügbar · Alle Zeiten in Ortszeit</p>
+    </div>
+    <div class="flight-filters">
+      <button class="ffilter active" onclick="filterMain('all',this)">Alle Ziele</button>
+      <button class="ffilter" onclick="filterMain('turkey',this)">🇹🇷 Türkei</button>
+      <button class="ffilter" onclick="filterMain('greece',this)">🇬🇷 Griechenland</button>
+      <button class="ffilter" onclick="filterMain('bulgaria',this)">🇧🇬 Bulgarien</button>
+      <button class="ffilter" onclick="filterMain('uk',this)">🇬🇧 England</button>
+    </div>
+    <div class="flights-grid" id="main-flights-grid"></div>
+  </div>
+</section>
+
+<!-- CLASSES -->
+<section class="classes-section" id="classes">
+  <div class="section-title">
+    <h2>Unsere Reiseklassen</h2>
+    <p>Für jeden Reisestil das Richtige</p>
+  </div>
+  <div class="classes-grid">
+    <div class="class-card cc-eco">
+      <div class="class-icon">💺</div>
+      <h3>Economy</h3>
+      <p>Komfortables Reisen zum besten Preis. Ideal für Kurztrips und Urlaubsreisen.</p>
+      <div class="class-feature">✓ Handgepäck inklusive</div>
+      <div class="class-feature">✓ Snacks an Bord</div>
+      <div class="class-feature">✓ Sitzplatzwahl möglich</div>
+    </div>
+    <div class="class-card cc-ecop">
+      <div class="class-icon">🌟</div>
+      <h3>Economy+</h3>
+      <p>Mehr Platz, mehr Komfort – mit zusätzlichen Extras für entspanntes Fliegen.</p>
+      <div class="class-feature">✓ Mehr Beinfreiheit (+15cm)</div>
+      <div class="class-feature">✓ Aufgabegepäck 23kg</div>
+      <div class="class-feature">✓ Prioritäts-Boarding</div>
+    </div>
+    <div class="class-card cc-biz">
+      <div class="class-icon">💼</div>
+      <h3>Business</h3>
+      <p>Premium Erfahrung mit erstklassigem Service für Geschäftsreisende und Genießer.</p>
+      <div class="class-feature">✓ Liegeflache Sitze</div>
+      <div class="class-feature">✓ Premium-Dining</div>
+      <div class="class-feature">✓ Lounge Zugang</div>
+    </div>
+    <div class="class-card cc-first">
+      <div class="class-icon">👑</div>
+      <h3>First Class</h3>
+      <p>Das Beste vom Besten. Privatsuiten, Gourmetküche und exklusiver Service.</p>
+      <div class="class-feature">✓ Private Suiten</div>
+      <div class="class-feature">✓ Gourmet-Menü</div>
+      <div class="class-feature">✓ Chauffeur-Service</div>
+    </div>
+  </div>
+</section>
+
+<!-- AIRPORTS -->
+<section class="airports-section" id="airports">
+  <div class="airports-inner">
+    <div class="section-title">
+      <h2>Unsere Flughäfen</h2>
+      <p>AvioraAirlines verbindet dich mit den wichtigsten Städten Europas</p>
+    </div>
+    <div class="airports-grid">
+      <div class="country-card">
+        <div class="country-header">
+          <span class="country-flag">🇹🇷</span>
+          <span class="country-name">Türkei</span>
+        </div>
+        <div class="airport-list">
+          <div class="airport-item"><span class="airport-name">Istanbul Sabiha</span><span class="airport-code">SAW</span></div>
+          <div class="airport-item"><span class="airport-name">Istanbul Atatürk</span><span class="airport-code">IST</span></div>
+          <div class="airport-item"><span class="airport-name">Antalya</span><span class="airport-code">AYT</span></div>
+          <div class="airport-item"><span class="airport-name">Bodrum Milas</span><span class="airport-code">BJV</span></div>
+          <div class="airport-item"><span class="airport-name">Izmir Adnan</span><span class="airport-code">ADB</span></div>
+        </div>
+      </div>
+      <div class="country-card">
+        <div class="country-header">
+          <span class="country-flag">🇩🇪</span>
+          <span class="country-name">Deutschland</span>
+        </div>
+        <div class="airport-list">
+          <div class="airport-item"><span class="airport-name">Frankfurt</span><span class="airport-code">FRA</span></div>
+          <div class="airport-item"><span class="airport-name">München</span><span class="airport-code">MUC</span></div>
+          <div class="airport-item"><span class="airport-name">Berlin</span><span class="airport-code">BER</span></div>
+          <div class="airport-item"><span class="airport-name">Hamburg</span><span class="airport-code">HAM</span></div>
+          <div class="airport-item"><span class="airport-name">Düsseldorf</span><span class="airport-code">DUS</span></div>
+          <div class="airport-item"><span class="airport-name">Köln/Bonn</span><span class="airport-code">CGN</span></div>
+        </div>
+      </div>
+      <div class="country-card">
+        <div class="country-header">
+          <span class="country-flag">🇬🇧</span>
+          <span class="country-name">England</span>
+        </div>
+        <div class="airport-list">
+          <div class="airport-item"><span class="airport-name">London Heathrow</span><span class="airport-code">LHR</span></div>
+          <div class="airport-item"><span class="airport-name">London Gatwick</span><span class="airport-code">LGW</span></div>
+          <div class="airport-item"><span class="airport-name">London Stansted</span><span class="airport-code">STN</span></div>
+          <div class="airport-item"><span class="airport-name">Manchester</span><span class="airport-code">MAN</span></div>
+          <div class="airport-item"><span class="airport-name">Birmingham</span><span class="airport-code">BHX</span></div>
+        </div>
+      </div>
+      <div class="country-card">
+        <div class="country-header">
+          <span class="country-flag">🇧🇬</span>
+          <span class="country-name">Bulgarien</span>
+        </div>
+        <div class="airport-list">
+          <div class="airport-item"><span class="airport-name">Sofia</span><span class="airport-code">SOF</span></div>
+          <div class="airport-item"><span class="airport-name">Varna</span><span class="airport-code">VAR</span></div>
+          <div class="airport-item"><span class="airport-name">Burgas</span><span class="airport-code">BOJ</span></div>
+          <div class="airport-item"><span class="airport-name">Plovdiv</span><span class="airport-code">PDV</span></div>
+        </div>
+      </div>
+      <div class="country-card">
+        <div class="country-header">
+          <span class="country-flag">🇬🇷</span>
+          <span class="country-name">Griechenland</span>
+        </div>
+        <div class="airport-list">
+          <div class="airport-item"><span class="airport-name">Athen Eleftherios</span><span class="airport-code">ATH</span></div>
+          <div class="airport-item"><span class="airport-name">Thessaloniki</span><span class="airport-code">SKG</span></div>
+          <div class="airport-item"><span class="airport-name">Heraklion Kreta</span><span class="airport-code">HER</span></div>
+          <div class="airport-item"><span class="airport-name">Rhodos</span><span class="airport-code">RHO</span></div>
+          <div class="airport-item"><span class="airport-name">Korfu</span><span class="airport-code">CFU</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXTRAS -->
+<section class="extras-section">
+  <div class="section-title">
+    <h2>Zusatzleistungen</h2>
+    <p>Alles, was dein Flug braucht</p>
+  </div>
+  <div class="extras-grid">
+    <div class="extra-card">
+      <div class="extra-icon">🧳</div>
+      <h4>Gepäck</h4>
+      <p>Zusätzliches Gepäck bis 32kg buchen. Online günstiger als am Flughafen.</p>
+    </div>
+    <div class="extra-card">
+      <div class="extra-icon">🪑</div>
+      <h4>Sitzplatzwahl</h4>
+      <p>Fenster, Gang oder Extra-Beinfreiheit – such dir deinen Lieblingsplatz aus.</p>
+    </div>
+    <div class="extra-card">
+      <div class="extra-icon">🍽️</div>
+      <h4>Mahlzeiten</h4>
+      <p>Vegetarisch, halal oder Kindermenü – bestell dein Essen im Voraus.</p>
+    </div>
+    <div class="extra-card">
+      <div class="extra-icon">🛡️</div>
+      <h4>Reiseschutz</h4>
+      <p>Rundum-Versicherung für Stornierung, Verspätung und medizinische Notfälle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>✈ Flug buchen</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="flight-summary-box">
+        <h3>Dein Flug</h3>
+        <div class="flight-summary-route" id="modal-route">—</div>
+        <div style="margin-top:8px;font-size:13px;color:var(--gray)" id="modal-details">—</div>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step-dot active" id="sdot1">1</div>
+        <div class="step-line" id="sline1"></div>
+        <div class="step-dot" id="sdot2">2</div>
+        <div class="step-line" id="sline2"></div>
+        <div class="step-dot" id="sdot3">3</div>
+        <div class="step-line" id="sline3"></div>
+        <div class="step-dot" id="sdot4">4</div>
+      </div>
+
+      <!-- Step 1: Passenger info -->
+      <div class="modal-step active" id="step1">
+        <h3 style="margin-bottom:16px;font-size:16px;color:var(--navy)">👤 Passagierdaten</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Vorname</label>
+            <input type="text" id="p-first" placeholder="z.B. Max">
+          </div>
+          <div class="form-group">
+            <label>Nachname</label>
+            <input type="text" id="p-last" placeholder="z.B. Mustermann">
+          </div>
+          <div class="form-group">
+            <label>Geburtsdatum</label>
+            <input type="date" id="p-dob">
+          </div>
+          <div class="form-group">
+            <label>Nationalität</label>
+            <select id="p-nat">
+              <option>Deutsch</option>
+              <option>Türkisch</option>
+              <option>Britisch</option>
+              <option>Griechisch</option>
+              <option>Bulgarisch</option>
+              <option>Sonstige</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Reisepass / Personalausweis Nr.</label>
+            <input type="text" id="p-doc" placeholder="z.B. C01X12345">
+          </div>
+        </div>
+        <div class="step-btns">
+          <div></div>
+          <button class="btn-next" onclick="nextStep(2)">Weiter → Kontakt</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Contact -->
+      <div class="modal-step" id="step2">
+        <h3 style="margin-bottom:16px;font-size:16px;color:var(--navy)">📧 Kontaktdaten</h3>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>E-Mail</label>
+            <input type="email" id="c-email" placeholder="deine@email.de">
+          </div>
+          <div class="form-group full">
+            <label>Telefonnummer</label>
+            <input type="tel" id="c-phone" placeholder="+49 123 456789">
+          </div>
+          <div class="form-group full">
+            <label>Notfallkontakt (optional)</label>
+            <input type="text" id="c-emergency" placeholder="Name + Telefon">
+          </div>
+        </div>
+        <div class="step-btns">
+          <button class="btn-back" onclick="nextStep(1)">← Zurück</button>
+          <button class="btn-next" onclick="nextStep(3)">Weiter → Extras</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Extras + Payment -->
+      <div class="modal-step" id="step3">
+        <h3 style="margin-bottom:16px;font-size:16px;color:var(--navy)">🛒 Extras & Bezahlung</h3>
+        <div style="margin-bottom:16px">
+          <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:14px;cursor:pointer">
+            <input type="checkbox" id="ext-bag" onchange="updatePrice()">
+            <span>🧳 Extra-Gepäck 23kg — <strong>R$ 29,99</strong></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:14px;cursor:pointer">
+            <input type="checkbox" id="ext-seat" onchange="updatePrice()">
+            <span>🪑 Sitzplatzwahl — <strong>R$ 9,99</strong></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:14px;cursor:pointer">
+            <input type="checkbox" id="ext-meal" onchange="updatePrice()">
+            <span>🍽️ Mahlzeit an Bord — <strong>R$ 14,99</strong></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer">
+            <input type="checkbox" id="ext-ins" onchange="updatePrice()">
+            <span>🛡️ Reiseschutz — <strong>R$ 19,99</strong></span>
+          </label>
+        </div>
+        <div class="price-breakdown" id="price-breakdown">
+          <!-- filled by JS -->
+        </div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Zahlungsmethode</label>
+            <select>
+              <option>💳 Kreditkarte (Visa/Mastercard)</option>
+              <option>🏦 Banküberweisung</option>
+              <option>📱 PayPal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Kartennummer</label>
+            <input type="text" placeholder="•••• •••• •••• ••••" maxlength="19">
+          </div>
+          <div class="form-group">
+            <label>Ablaufdatum</label>
+            <input type="text" placeholder="MM/JJ" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" placeholder="•••" maxlength="3">
+          </div>
+          <div class="form-group">
+            <label>Karteninhaber</label>
+            <input type="text" placeholder="Vollständiger Name">
+          </div>
+        </div>
+        <div class="step-btns">
+          <button class="btn-back" onclick="nextStep(2)">← Zurück</button>
+          <button class="btn-next" onclick="completeBooking()">✓ Jetzt buchen</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Confirmation -->
+      <div class="modal-step" id="step4">
+        <div class="success-screen">
+          <div class="tick">✅</div>
+          <h3>Buchung bestätigt!</h3>
+          <p>Dein Flug wurde erfolgreich gebucht. Die Bestätigung wurde an deine E-Mail geschickt.</p>
+          <div class="booking-ref" id="booking-ref">AV-000000</div>
+          <p style="margin-top:8px">Bitte bring diesen Code und deinen Reisepass mit. Wir freuen uns auf deinen Flug! ✈</p>
+          <div style="margin-top:24px">
+            <button class="btn-next" onclick="closeModal()" style="max-width:200px;margin:0 auto">Schließen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">
+        <div class="logo-icon">✈</div>
+        <div class="logo-text">Aviora<span>Airlines</span></div>
+      </a>
+      <p>AvioraAirlines verbindet Europa mit Leidenschaft. Komfort, Pünktlichkeit und günstige Preise – das ist unser Versprechen.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Unternehmen</h4>
+      <a href="#">Über uns</a>
+      <a href="#">Karriere</a>
+      <a href="#">Presse</a>
+      <a href="#">Nachhaltigkeit</a>
+    </div>
+    <div class="footer-col">
+      <h4>Service</h4>
+      <a href="#">Online Check-in</a>
+      <a href="#">Gepäckinfo</a>
+      <a href="#">Flugstatus</a>
+      <a href="#">Kontakt</a>
+    </div>
+    <div class="footer-col">
+      <h4>Rechtliches</h4>
+      <a href="#">Datenschutz</a>
+      <a href="#">AGB</a>
+      <a href="#">Impressum</a>
+      <a href="#">Cookie-Einstellungen</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; <span>AvioraAirlines</span> 2026–2029 · Alle Rechte vorbehalten · Made with ❤️ in Europa
+  </div>
+</footer>
+
+<script>
+// ===== SLIDER =====
+let slideIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+function goSlide(i) {
+  slides[slideIndex].classList.remove('active');
+  dots[slideIndex].classList.remove('active');
+  slideIndex = i;
+  slides[slideIndex].classList.add('active');
+  dots[slideIndex].classList.add('active');
+}
+setInterval(() => goSlide((slideIndex + 1) % slides.length), 5000);
+
+// ===== TAB =====
+function setTab(el, type) {
+  document.querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===== FLIGHT DATA =====
+const isJuly = () => {
+  const d = document.getElementById('departDate').value;
+  if (!d) return false;
+  const m = new Date(d).getMonth();
+  return m === 6; // July
+};
+
+// Base prices per route (outbound). July surcharge applied dynamically.
+const ROUTES = [
+  { id:1, from:'FRA', fromCity:'Frankfurt', to:'SAW', toCity:'Istanbul', country:'turkey',
+    dep:'06:45', arr:'10:30', dur:'2h 45min', plane:'AV-303', stops:'Nonstop',
+    eco:139.99, ecop:189.99, biz:399.99, first:799.99,
+    ecoRet:79.99, ecopRet:119.99, bizRet:249.99, firstRet:499.99 },
+  { id:2, from:'FRA', fromCity:'Frankfurt', to:'AYT', toCity:'Antalya', country:'turkey',
+    dep:'08:15', arr:'12:20', dur:'3h 05min', plane:'AV-201', stops:'Nonstop',
+    eco:149.99, ecop:199.99, biz:449.99, first:849.99,
+    ecoRet:89.99, ecopRet:129.99, bizRet:279.99, firstRet:529.99 },
+  { id:3, from:'MUC', fromCity:'München', to:'IST', toCity:'Istanbul', country:'turkey',
+    dep:'11:00', arr:'14:55', dur:'2h 55min', plane:'AV-115', stops:'Nonstop',
+    eco:129.99, ecop:179.99, biz:379.99, first:749.99,
+    ecoRet:75.99, ecopRet:109.99, bizRet:229.99, firstRet:469.99 },
+  { id:4, from:'BER', fromCity:'Berlin', to:'ATH', toCity:'Athen', country:'greece',
+    dep:'09:30', arr:'13:15', dur:'3h 45min', plane:'AV-440', stops:'Nonstop',
+    eco:119.99, ecop:169.99, biz:359.99, first:699.99,
+    ecoRet:69.99, ecopRet:99.99, bizRet:219.99, firstRet:449.99 },
+  { id:5, from:'HAM', fromCity:'Hamburg', to:'HER', toCity:'Heraklion', country:'greece',
+    dep:'07:20', arr:'11:50', dur:'4h 30min', plane:'AV-777', stops:'Nonstop',
+    eco:159.99, ecop:219.99, biz:479.99, first:899.99,
+    ecoRet:99.99, ecopRet:139.99, bizRet:299.99, firstRet:549.99 },
+  { id:6, from:'FRA', fromCity:'Frankfurt', to:'RHO', toCity:'Rhodos', country:'greece',
+    dep:'14:30', arr:'18:55', dur:'4h 25min', plane:'AV-502', stops:'Nonstop',
+    eco:169.99, ecop:229.99, biz:499.99, first:929.99,
+    ecoRet:109.99, ecopRet:149.99, bizRet:319.99, firstRet:599.99 },
+  { id:7, from:'MUC', fromCity:'München', to:'SOF', toCity:'Sofia', country:'bulgaria',
+    dep:'13:10', arr:'15:45', dur:'2h 35min', plane:'AV-218', stops:'Nonstop',
+    eco:99.99, ecop:139.99, biz:299.99, first:599.99,
+    ecoRet:59.99, ecopRet:89.99, bizRet:179.99, firstRet:379.99 },
+  { id:8, from:'BER', fromCity:'Berlin', to:'VAR', toCity:'Varna', country:'bulgaria',
+    dep:'16:00', arr:'18:40', dur:'2h 40min', plane:'AV-331', stops:'Nonstop',
+    eco:109.99, ecop:149.99, biz:319.99, first:629.99,
+    ecoRet:64.99, ecopRet:94.99, bizRet:189.99, firstRet:399.99 },
+  { id:9, from:'HAM', fromCity:'Hamburg', to:'BOJ', toCity:'Burgas', country:'bulgaria',
+    dep:'10:45', arr:'13:30', dur:'2h 45min', plane:'AV-209', stops:'Nonstop',
+    eco:104.99, ecop:144.99, biz:309.99, first:609.99,
+    ecoRet:61.99, ecopRet:91.99, bizRet:184.99, firstRet:389.99 },
+  { id:10, from:'FRA', fromCity:'Frankfurt', to:'LHR', toCity:'London', country:'uk',
+    dep:'08:00', arr:'09:15', dur:'1h 15min', plane:'AV-101', stops:'Nonstop',
+    eco:109.99, ecop:159.99, biz:349.99, first:679.99,
+    ecoRet:64.99, ecopRet:94.99, bizRet:209.99, firstRet:429.99 },
+  { id:11, from:'MUC', fromCity:'München', to:'MAN', toCity:'Manchester', country:'uk',
+    dep:'12:30', arr:'14:00', dur:'1h 30min', plane:'AV-404', stops:'Nonstop',
+    eco:119.99, ecop:169.99, biz:369.99, first:719.99,
+    ecoRet:69.99, ecopRet:99.99, bizRet:229.99, firstRet:449.99 },
+  { id:12, from:'DUS', fromCity:'Düsseldorf', to:'LGW', toCity:'London Gatwick', country:'uk',
+    dep:'15:20', arr:'16:30', dur:'1h 10min', plane:'AV-119', stops:'Nonstop',
+    eco:99.99, ecop:149.99, biz:329.99, first:649.99,
+    ecoRet:59.99, ecopRet:89.99, bizRet:199.99, firstRet:419.99 },
+];
+
+// July multiplier
+const JULY_MULT = 1.0; // We use fixed July prices from requirements (369.99/179.99 for main ones)
+// For July: hinflug per person 369,99, rückflug 179,99 – we apply this to certain routes in july
+function getPrice(r, july) {
+  if (july) {
+    // July premium pricing, varied
+    const julyBase = { eco: r.eco * 2.45, ecop: r.ecop * 2.3, biz: r.biz * 1.9, first: r.first * 1.7 };
+    // Snap main economy to 369.99 for the first Turkey route, vary others
+    return {
+      eco: Math.round((r.eco * 2.4 + Math.random()*20 - 10) * 100) / 100,
+      ecop: Math.round((r.ecop * 2.2 + Math.random()*25 - 12) * 100) / 100,
+      biz: Math.round((r.biz * 1.85 + Math.random()*30 - 15) * 100) / 100,
+      first: Math.round((r.first * 1.65 + Math.random()*40 - 20) * 100) / 100,
+      ecoRet: Math.round((r.ecoRet * 2.1 + Math.random()*15 - 7) * 100) / 100,
+      ecopRet: Math.round((r.ecopRet * 2.0 + Math.random()*18 - 9) * 100) / 100,
+      bizRet: Math.round((r.bizRet * 1.8 + Math.random()*25 - 12) * 100) / 100,
+      firstRet: Math.round((r.firstRet * 1.6 + Math.random()*35 - 17) * 100) / 100,
+    };
+  }
+  return { eco: r.eco, ecop: r.ecop, biz: r.biz, first: r.first,
+           ecoRet: r.ecoRet, ecopRet: r.ecopRet, bizRet: r.bizRet, firstRet: r.firstRet };
+}
+
+function fmt(n) { return 'R$ ' + n.toFixed(2).replace('.', ','); }
+
+function buildFlightCard(r, july, pax, showTotal) {
+  pax = pax || 1;
+  const p = getPrice(r, july);
+  const total2 = (july ? 369.99 : p.eco) + (july ? 179.99 : p.ecoRet);
+  const julybadge = july ? '<span class="july-badge">🔥 Juli-Preis</span>' : '';
+
+  return `
+  <div class="flight-card" data-country="${r.country}" data-id="${r.id}">
+    <div class="airline-logo">✈</div>
+    <div>
+      <div class="flight-times">
+        <div class="time-block">
+          <div class="time">${r.dep}</div>
+          <div class="airport">${r.from}</div>
+          <div class="city">${r.fromCity}</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-duration">${r.dur}</div>
+          <div class="flight-line-bar">
+            <div class="line-dot"></div>
+            <div class="line-dash"></div>
+            <span class="line-plane">✈</span>
+            <div class="line-dash"></div>
+            <div class="line-dot"></div>
+          </div>
+          <div class="flight-stop">${r.stops}</div>
+        </div>
+        <div class="time-block">
+          <div class="time">${r.arr}</div>
+          <div class="airport">${r.to}</div>
+          <div class="city">${r.toCity}</div>
+        </div>
+      </div>
+      <div class="flight-tags" style="margin-top:10px">
+        <span class="ftag ftag-blue">✈ ${r.plane}</span>
+        <span class="ftag ftag-green">✓ ${r.stops}</span>
+        ${julybadge}
+      </div>
+      ${showTotal && july ? `<div class="total-bar" style="margin-top:10px">
+        <span class="label">Endsumme Hin+Rück (${pax} Pers.)</span>
+        <span class="price">${fmt((369.99 + 179.99) * pax)}</span>
+      </div>` : ''}
+      ${showTotal && !july ? `<div class="total-bar" style="margin-top:10px">
+        <span class="label">Endsumme Hin+Rück (${pax} Pers.)</span>
+        <span class="price">${fmt((p.eco + p.ecoRet) * pax)}</span>
+      </div>` : ''}
+    </div>
+    <div class="flight-class-badges">
+      <div class="class-badge" onclick="openBooking(${r.id},'Economy','${r.from}','${r.to}','${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}',${p.eco},${p.ecoRet},${pax},${july?1:0})">
+        <span class="class-name">Economy</span>
+        <span class="class-price">${fmt(p.eco)}</span>
+        <span class="class-currency">p.P.</span>
+      </div>
+      <div class="class-badge" onclick="openBooking(${r.id},'Economy+','${r.from}','${r.to}','${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}',${p.ecop},${p.ecopRet},${pax},${july?1:0})">
+        <span class="class-name">Economy+</span>
+        <span class="class-price">${fmt(p.ecop)}</span>
+        <span class="class-currency">p.P.</span>
+      </div>
+      <div class="class-badge" onclick="openBooking(${r.id},'Business','${r.from}','${r.to}','${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}',${p.biz},${p.bizRet},${pax},${july?1:0})">
+        <span class="class-name">Business</span>
+        <span class="class-price">${fmt(p.biz)}</span>
+        <span class="class-currency">p.P.</span>
+      </div>
+    </div>
+    <button class="book-btn" onclick="openBooking(${r.id},'Economy','${r.from}','${r.to}','${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}',${p.eco},${p.ecoRet},${pax},${july?1:0})">Buchen</button>
+  </div>`;
+}
+
+// Render main flights
+function renderMainFlights(filter) {
+  const grid = document.getElementById('main-flights-grid');
+  let html = '';
+  ROUTES.forEach(r => {
+    if (filter === 'all' || r.country === filter) {
+      html += buildFlightCard(r, false, 1, true);
+    }
+  });
+  grid.innerHTML = html;
+}
+renderMainFlights('all');
+
+function filterMain(f, el) {
+  document.querySelectorAll('.ffilter').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderMainFlights(f);
+}
+
+// ===== SEARCH =====
+function searchFlights() {
+  const from = document.getElementById('fromAirport').value;
+  const to = document.getElementById('toAirport').value;
+  const date = document.getElementById('departDate').value;
+  const pax = parseInt(document.getElementById('passengerCount').value) || 1;
+  const jul = date && new Date(date).getMonth() === 6;
+
+  const sr = document.getElementById('search-results');
+  const grid = document.getElementById('results-grid');
+  const title = document.getElementById('results-title');
+  const count = document.getElementById('results-count');
+
+  let results = ROUTES.filter(r => {
+    if (from && r.from !== from) return false;
+    if (to && r.to !== to) return false;
+    return true;
+  });
+
+  if (results.length === 0) {
+    results = ROUTES.slice(0, 4); // fallback
+  }
+
+  title.textContent = (from || 'Alle') + ' → ' + (to || 'Alle Ziele');
+  count.textContent = results.length + ' Flüge gefunden' + (date ? ' · ' + new Date(date).toLocaleDateString('de-DE') : '') + (pax > 1 ? ' · ' + pax + ' Personen' : '');
+
+  let html = '';
+  results.forEach(r => {
+    html += buildFlightCard(r, jul, pax, true);
+  });
+  grid.innerHTML = html;
+
+  sr.classList.add('show');
+  sr.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function filterFlights(f, el) {
+  document.querySelectorAll('#search-results .ffilter').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  // Simple show/hide by class badge label (visual only)
+}
+
+// ===== BOOKING MODAL =====
+let currentBooking = {};
+let currentStep = 1;
+
+function openBooking(id, cls, from, to, fromCity, toCity, dep, arr, price, retPrice, pax, july) {
+  currentBooking = { id, cls, from, to, fromCity, toCity, dep, arr, price, retPrice, pax: pax||1, july };
+  currentStep = 1;
+
+  document.getElementById('modal-route').innerHTML = `${fromCity} (${from}) <span>→</span> ${toCity} (${to})`;
+  document.getElementById('modal-details').innerHTML = `${dep} → ${arr} · ${cls} · ${pax||1} Passagier(e) · ${july?'Juli-Preis':'Standard'} `;
+
+  updateStepUI();
+  updatePrice();
+  document.getElementById('bookingModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('bookingModal').classList.remove('show');
+  document.body.style.overflow = '';
+  // reset
+  currentStep = 1;
+  document.querySelectorAll('.modal-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step1').classList.add('active');
+  updateStepUI();
+}
+
+function nextStep(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step' + currentStep).classList.add('active');
+  updateStepUI();
+  if (n === 3) updatePrice();
+}
+
+function updateStepUI() {
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('sdot' + i);
+    dot.className = 'step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+    if (i < 4) {
+      const line = document.getElementById('sline' + i);
+      line.className = 'step-line' + (i < currentStep ? ' done' : '');
+    }
+  }
+}
+
+function updatePrice() {
+  const b = currentBooking;
+  const extBag = document.getElementById('ext-bag')?.checked ? 29.99 : 0;
+  const extSeat = document.getElementById('ext-seat')?.checked ? 9.99 : 0;
+  const extMeal = document.getElementById('ext-meal')?.checked ? 14.99 : 0;
+  const extIns = document.getElementById('ext-ins')?.checked ? 19.99 : 0;
+
+  const hin = (b.july ? 369.99 : b.price) * b.pax;
+  const ret = (b.july ? 179.99 : b.retPrice) * b.pax;
+  const extras = (extBag + extSeat + extMeal + extIns) * b.pax;
+  const taxes = Math.round((hin + ret) * 0.07 * 100) / 100;
+  const total = hin + ret + extras + taxes;
+
+  const pb = document.getElementById('price-breakdown');
+  if (pb) pb.innerHTML = `
+    <div class="price-row"><span>Hinflug (${b.pax}x ${fmt(b.july ? 369.99 : b.price)})</span><span class="amount">${fmt(hin)}</span></div>
+    <div class="price-row"><span>Rückflug (${b.pax}x ${fmt(b.july ? 179.99 : b.retPrice)})</span><span class="amount">${fmt(ret)}</span></div>
+    ${extBag ? `<div class="price-row"><span>🧳 Gepäck (${b.pax}x)</span><span class="amount">${fmt(extBag*b.pax)}</span></div>` : ''}
+    ${extSeat ? `<div class="price-row"><span>🪑 Sitzplatz (${b.pax}x)</span><span class="amount">${fmt(extSeat*b.pax)}</span></div>` : ''}
+    ${extMeal ? `<div class="price-row"><span>🍽️ Mahlzeit (${b.pax}x)</span><span class="amount">${fmt(extMeal*b.pax)}</span></div>` : ''}
+    ${extIns ? `<div class="price-row"><span>🛡️ Versicherung (${b.pax}x)</span><span class="amount">${fmt(extIns*b.pax)}</span></div>` : ''}
+    <div class="price-row"><span>Steuern & Gebühren</span><span class="amount">${fmt(taxes)}</span></div>
+    <div class="price-row total"><span>Gesamtpreis</span><span class="amount">${fmt(total)}</span></div>
+  `;
+}
+
+function completeBooking() {
+  const ref = 'AV-' + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById('booking-ref').textContent = ref;
+  document.getElementById('step3').classList.remove('active');
+  currentStep = 4;
+  document.getElementById('step4').classList.add('active');
+  updateStepUI();
+}
+
+// Close on overlay click
+document.getElementById('bookingModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
