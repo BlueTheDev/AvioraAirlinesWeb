@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AvioraAirlines – Fliegen mit Stil | SunExpress Style Buchungsbar</title>
+<title>AvioraAirlines – Alle Türkei & Deutschland Airports</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -16,7 +16,6 @@
     --white: #ffffff;
     --gray: #6b7280;
     --lightgray: #e5e9f0;
-    --red: #e53e3e;
     --green: #22c55e;
     --font-main: 'DM Sans', sans-serif;
     --font-display: 'DM Serif Display', serif;
@@ -118,9 +117,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--navy);
+    background: rgba(10,22,40,0.96);
     backdrop-filter: blur(10px);
-    background: rgba(10,22,40,0.95);
     border-top: 3px solid var(--accent);
     padding: 12px 24px;
     display: none;
@@ -158,7 +156,8 @@
   .btn-back { background: var(--light); color: var(--navy); border: none; border-radius: 10px; padding: 12px 24px; cursor: pointer; }
   .success-screen { text-align: center; padding: 20px 0; }
   .booking-ref { background: var(--navy); color: var(--accent); font-size: 22px; font-weight: 700; letter-spacing: 3px; border-radius: 10px; padding: 10px 20px; display: inline-block; margin: 16px 0; font-family: monospace; }
-
+  .airport-list-compact { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .airport-badge { background: var(--light); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
   footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 50px 40px 24px; margin-top: 60px; }
   .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto; margin-bottom: 40px; }
   @media (max-width: 900px) { .search-row { grid-template-columns: 1fr 1fr; } .flight-card { grid-template-columns: 1fr; } .booking-bar-fixed { flex-direction: column; text-align: center; } }
@@ -166,76 +165,129 @@
 </head>
 <body>
 
-<div class="promo-strip">🎉 Sonderangebot: Türkei Hin & Zurück ab <span>R$ 529,98</span> · Code: AVIORA10</div>
+<div class="promo-strip">✈ AvioraAirlines – Alle Airports der Türkei & Deutschlands · Jetzt buchen und sparen <span>bis zu 30%</span></div>
 <nav>
   <a href="#" class="logo"><div class="logo-icon">✈</div><div class="logo-text">Aviora<span>Airlines</span></div></a>
   <ul><li><a href="#flights">Flüge</a></li><li><a href="#airports">Flughäfen</a></li><li><a href="#" class="nav-btn">Einloggen</a></li></ul>
 </nav>
 
-<section class="hero"><div class="slide slide-1 active"><div class="slide-bg"></div><div class="slide-content"><span class="slide-badge">🔥 Sommerdeal 2026</span><h1>Türkei wartet auf dich</h1><p>Direkte Flüge ab Frankfurt.</p><a href="#search" class="slide-cta">Jetzt buchen</a></div></div><div class="slide slide-2"><div class="slide-bg"></div><div class="slide-content"><span class="slide-badge">⭐ Empfohlen</span><h1>Griechenland – Sonne & Meer</h1><p>Athen, Kreta – günstige Tarife.</p><a href="#search" class="slide-cta">Flüge suchen</a></div></div><div class="slide slide-3"><div class="slide-bg"></div><div class="slide-content"><span class="slide-badge">✨ Business Klasse</span><h1>Fliegen wie nie zuvor</h1><p>Premium-Dining & Service.</p><a href="#classes" class="slide-cta">Klassen entdecken</a></div></div><div class="slide-dots"><div class="dot active" onclick="goSlide(0)"></div><div class="dot" onclick="goSlide(1)"></div><div class="dot" onclick="goSlide(2)"></div></div></section>
+<section class="hero">
+  <div class="slide slide-1 active"><div class="slide-bg"></div><div class="slide-content"><span class="slide-badge">🇹🇷 Türkei Special</span><h1>Alle Airports der Türkei</h1><p>Istanbul, Ankara, Izmir, Antalya, Bodrum, Trabzon und mehr – nonstop ab Deutschland.</p><a href="#search" class="slide-cta">Jetzt entdecken</a></div></div>
+  <div class="slide slide-2"><div class="slide-bg"></div><div class="slide-content"><span class="slide-badge">🇩🇪 Deutschland</span><h1>Ab 9 Airports</h1><p>Frankfurt, München, Berlin, Hamburg, Düsseldorf, Köln, Stuttgart, Hannover, Nürnberg.</p><a href="#search" class="slide-cta">Flüge suchen</a></div></div>
+  <div class="slide slide-3"><div class="slide-bg"></div><div class="slide-content"><span class="slide-badge">✨ Premium</span><h1>Business Class</h1><p>Liegeflache Sitze & Lounge-Zugang.</p><a href="#classes" class="slide-cta">Mehr erfahren</a></div></div>
+  <div class="slide-dots"><div class="dot active" onclick="goSlide(0)"></div><div class="dot" onclick="goSlide(1)"></div><div class="dot" onclick="goSlide(2)"></div></div>
+</section>
 
-<section class="search-section" id="search"><div class="search-box"><div class="search-tabs"><button class="stab active" onclick="setTab(this,'roundtrip')">↔ Hin & Zurück</button><button class="stab" onclick="setTab(this,'oneway')">→ Nur Hinflug</button></div><div class="search-row"><div class="search-field"><label>Von</label><select id="fromAirport"><option value="">Abflugort</option><option value="FRA">Frankfurt (FRA)</option><option value="MUC">München (MUC)</option><option value="BER">Berlin (BER)</option><option value="HAM">Hamburg (HAM)</option><option value="DUS">Düsseldorf (DUS)</option></select></div><div class="search-field"><label>Nach</label><select id="toAirport"><option value="">Zielort</option><optgroup label="🇹🇷 Türkei"><option value="SAW">Istanbul Sabiha (SAW)</option><option value="AYT">Antalya (AYT)</option><option value="BJV">Bodrum (BJV)</option></optgroup><optgroup label="🇬🇷 Griechenland"><option value="ATH">Athen (ATH)</option><option value="HER">Heraklion (HER)</option><option value="RHO">Rhodos (RHO)</option></optgroup><optgroup label="🇬🇧 England"><option value="LHR">London Heathrow (LHR)</option><option value="MAN">Manchester (MAN)</option></optgroup><optgroup label="🇧🇬 Bulgarien"><option value="SOF">Sofia (SOF)</option><option value="VAR">Varna (VAR)</option></optgroup></select></div><div class="search-field"><label>Hinflug</label><input type="date" id="departDate" min="2026-04-16"></div><div class="search-field"><label>Passagiere</label><select id="passengerCount"><option value="1">1 Erwachsener</option><option value="2">2 Erwachsene</option><option value="3">3 Personen</option><option value="4">4 Personen</option></select></div><button class="search-btn" onclick="searchFlights()">🔍 Suchen</button></div></div></section>
+<section class="search-section" id="search">
+  <div class="search-box">
+    <div class="search-tabs"><button class="stab active" onclick="setTab(this)">↔ Hin & Zurück</button><button class="stab" onclick="setTab(this)">→ Nur Hinflug</button></div>
+    <div class="search-row">
+      <div class="search-field"><label>Von (Deutschland)</label><select id="fromAirport"><option value="">Alle Abflughäfen</option><option value="FRA">Frankfurt (FRA)</option><option value="MUC">München (MUC)</option><option value="BER">Berlin (BER)</option><option value="HAM">Hamburg (HAM)</option><option value="DUS">Düsseldorf (DUS)</option><option value="CGN">Köln/Bonn (CGN)</option><option value="STR">Stuttgart (STR)</option><option value="HAJ">Hannover (HAJ)</option><option value="NUE">Nürnberg (NUE)</option></select></div>
+      <div class="search-field"><label>Nach (Türkei)</label><select id="toAirport"><option value="">Alle Türkei Airports</option><option value="IST">Istanbul (IST)</option><option value="SAW">Istanbul Sabiha (SAW)</option><option value="ESB">Ankara Esenboğa (ESB)</option><option value="AYT">Antalya (AYT)</option><option value="ADB">Izmir Adnan Menderes (ADB)</option><option value="BJV">Bodrum Milas (BJV)</option><option value="DLM">Dalaman (DLM)</option><option value="TZX">Trabzon (TZX)</option><option value="GZT">Gaziantep (GZT)</option><option value="ADA">Adana (ADA)</option><option value="KYS">Kayseri (KYS)</option><option value="DNZ">Denizli (DNZ)</option></select></div>
+      <div class="search-field"><label>Hinflug</label><input type="date" id="departDate" min="2026-04-16"></div>
+      <div class="search-field"><label>Passagiere</label><select id="passengerCount"><option value="1">1 Erwachsener</option><option value="2">2 Erwachsene</option><option value="3">3 Personen</option><option value="4">4 Personen</option></select></div>
+      <button class="search-btn" onclick="searchFlights()">🔍 Suchen</button>
+    </div>
+  </div>
+</section>
 
 <div id="search-results" style="max-width:1100px; margin:30px auto; padding:0 20px; display:none;"><div class="sr-header"><h2 id="results-title">Suchergebnisse</h2></div><div class="flights-grid" id="results-grid"></div></div>
 
-<section class="flights-section" id="flights"><div class="flights-inner"><div class="section-title"><h2>Aktuelle Flüge</h2><p>Direkte Verbindungen</p></div><div class="flight-filters"><button class="ffilter active" onclick="filterMain('all',this)">Alle Ziele</button><button class="ffilter" onclick="filterMain('turkey',this)">🇹🇷 Türkei</button><button class="ffilter" onclick="filterMain('greece',this)">🇬🇷 Griechenland</button><button class="ffilter" onclick="filterMain('uk',this)">🇬🇧 England</button></div><div class="flights-grid" id="main-flights-grid"></div></div></section>
+<section class="flights-section" id="flights">
+  <div class="flights-inner"><div class="section-title"><h2>✈ Beliebte Türkei-Verbindungen</h2><p>Alle Flüge ab Deutschland in die Türkei – täglich verfügbar</p></div><div class="flight-filters"><button class="ffilter active" onclick="filterMain('all',this)">Alle Ziele</button><button class="ffilter" onclick="filterMain('istanbul',this)">Istanbul</button><button class="ffilter" onclick="filterMain('antalia',this)">Antalya / Küste</button><button class="ffilter" onclick="filterMain('izmir',this)">Izmir / Bodrum</button></div><div class="flights-grid" id="main-flights-grid"></div></div>
+</section>
 
-<!-- SUNEXPRESS STYLE FIXED BAR -->
-<div id="bookingBar" class="booking-bar-fixed"><div class="bar-flight-info"><span class="bar-route" id="barRoute">—</span><span class="bar-class" id="barClass">Economy</span><span>✈ Hin+Rück</span></div><div class="bar-price-details"><span class="total-price" id="barTotal">R$ 0,00</span><span class="price-per-pax" id="barPerPax">pro Person</span></div><button class="bar-book-now" id="barBookBtn">Weiter zur Buchung</button><button class="bar-close" onclick="closeBookingBar()">✕</button></div>
+<!-- AIRPORT INFO SECTION -->
+<section style="max-width:1100px; margin:40px auto; padding:0 20px;" id="airports">
+  <div class="section-title"><h2>🇹🇷 Alle Türkei Airports & 🇩🇪 Deutschland Airports</h2><p>AvioraAirlines fliegt von 9 deutschen Flughäfen zu 12 türkischen Zielen</p></div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+    <div style="background:var(--light); border-radius:16px; padding:20px;"><h3 style="font-family:var(--font-display); margin-bottom:12px;">🇩🇪 Deutschland (Abflug)</h3><div class="airport-list-compact"><span class="airport-badge">Frankfurt FRA</span><span class="airport-badge">München MUC</span><span class="airport-badge">Berlin BER</span><span class="airport-badge">Hamburg HAM</span><span class="airport-badge">Düsseldorf DUS</span><span class="airport-badge">Köln/Bonn CGN</span><span class="airport-badge">Stuttgart STR</span><span class="airport-badge">Hannover HAJ</span><span class="airport-badge">Nürnberg NUE</span></div></div>
+    <div style="background:var(--light); border-radius:16px; padding:20px;"><h3 style="font-family:var(--font-display); margin-bottom:12px;">🇹🇷 Türkei (Ankunft)</h3><div class="airport-list-compact"><span class="airport-badge">Istanbul IST</span><span class="airport-badge">Sabiha SAW</span><span class="airport-badge">Ankara ESB</span><span class="airport-badge">Antalya AYT</span><span class="airport-badge">Izmir ADB</span><span class="airport-badge">Bodrum BJV</span><span class="airport-badge">Dalaman DLM</span><span class="airport-badge">Trabzon TZX</span><span class="airport-badge">Gaziantep GZT</span><span class="airport-badge">Adana ADA</span><span class="airport-badge">Kayseri KYS</span><span class="airport-badge">Denizli DNZ</span></div></div>
+  </div>
+</section>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="bookingModal"><div class="modal"><div class="modal-header"><h2>✈ Flug buchen</h2><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="flight-summary-box"><h3>Dein Flug</h3><div id="modal-route">—</div><div id="modal-details" style="font-size:13px; color:var(--gray); margin-top:5px;"></div></div><div id="step1" class="modal-step active"><div class="form-grid" style="display:grid; gap:14px;"><input type="text" id="p-first" placeholder="Vorname"><input type="text" id="p-last" placeholder="Nachname"><input type="date" id="p-dob"><input type="email" id="c-email" placeholder="E-Mail"></div><div class="step-btns"><div></div><button class="btn-next" onclick="nextStep(2)">Weiter →</button></div></div><div id="step2" class="modal-step"><h3>Extras & Preis</h3><div><label><input type="checkbox" id="ext-bag" onchange="updatePriceModal()"> 🧳 Extra-Gepäck 23kg — R$ 29,99</label><br><label><input type="checkbox" id="ext-seat" onchange="updatePriceModal()"> 🪑 Sitzplatzwahl — R$ 9,99</label></div><div id="price-breakdown-modal" class="price-breakdown"></div><div class="step-btns"><button class="btn-back" onclick="nextStep(1)">Zurück</button><button class="btn-next" onclick="completeBooking()">Jetzt buchen</button></div></div><div id="step3" class="modal-step"><div class="success-screen"><div class="tick">✅</div><h3>Buchung bestätigt!</h3><div class="booking-ref" id="booking-ref">AV-000000</div><button class="btn-next" onclick="closeModal()">Schließen</button></div></div></div></div></div>
+<div class="booking-bar-fixed" id="bookingBar"><div class="bar-flight-info"><span class="bar-route" id="barRoute">—</span><span class="bar-class" id="barClass">Economy</span></div><div class="bar-price-details"><span class="total-price" id="barTotal">R$ 0,00</span><span class="price-per-pax" id="barPerPax">p.P.</span></div><button class="bar-book-now" id="barBookBtn">Weiter zur Buchung</button><button class="bar-close" onclick="closeBookingBar()">✕</button></div>
+
+<div class="modal-overlay" id="bookingModal"><div class="modal"><div class="modal-header"><h2>✈ Flug buchen</h2><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="flight-summary-box"><h3>Dein Flug</h3><div id="modal-route">—</div><div id="modal-details" style="font-size:13px; color:var(--gray); margin-top:5px;"></div></div><div id="step1" class="modal-step active"><div style="display:grid; gap:14px;"><input type="text" id="p-first" placeholder="Vorname"><input type="text" id="p-last" placeholder="Nachname"><input type="date" id="p-dob"><input type="email" id="c-email" placeholder="E-Mail"></div><div class="step-btns"><div></div><button class="btn-next" onclick="nextStep(2)">Weiter →</button></div></div><div id="step2" class="modal-step"><h3>Extras & Preis</h3><div><label><input type="checkbox" id="ext-bag" onchange="updatePriceModal()"> 🧳 Extra-Gepäck 23kg — R$ 29,99</label><br><label><input type="checkbox" id="ext-seat" onchange="updatePriceModal()"> 🪑 Sitzplatzwahl — R$ 9,99</label></div><div id="price-breakdown-modal" class="price-breakdown"></div><div class="step-btns"><button class="btn-back" onclick="nextStep(1)">Zurück</button><button class="btn-next" onclick="completeBooking()">Jetzt buchen</button></div></div><div id="step3" class="modal-step"><div class="success-screen"><div class="tick">✅</div><h3>Buchung bestätigt!</h3><div class="booking-ref" id="booking-ref">AV-000000</div><button class="btn-next" onclick="closeModal()">Schließen</button></div></div></div></div></div>
 
 <script>
-  // FLIGHT DATABASE
-  const ROUTES = [
-    { id:1, from:'FRA', fromCity:'Frankfurt', to:'SAW', toCity:'Istanbul', country:'turkey', dep:'06:45', arr:'10:30', dur:'2h 45min', plane:'AV-303', stops:'Nonstop', eco:139.99, ecop:189.99, biz:399.99, ecoRet:79.99, ecopRet:119.99, bizRet:249.99 },
-    { id:2, from:'FRA', fromCity:'Frankfurt', to:'AYT', toCity:'Antalya', country:'turkey', dep:'08:15', arr:'12:20', dur:'3h 05min', plane:'AV-201', stops:'Nonstop', eco:149.99, ecop:199.99, biz:449.99, ecoRet:89.99, ecopRet:129.99, bizRet:279.99 },
-    { id:3, from:'MUC', fromCity:'München', to:'ATH', toCity:'Athen', country:'greece', dep:'09:30', arr:'13:15', dur:'3h 45min', plane:'AV-440', stops:'Nonstop', eco:119.99, ecop:169.99, biz:359.99, ecoRet:69.99, ecopRet:99.99, bizRet:219.99 },
-    { id:4, from:'BER', fromCity:'Berlin', to:'HER', toCity:'Heraklion', country:'greece', dep:'07:20', arr:'11:50', dur:'4h 30min', plane:'AV-777', stops:'Nonstop', eco:159.99, ecop:219.99, biz:479.99, ecoRet:99.99, ecopRet:139.99, bizRet:299.99 },
-    { id:5, from:'HAM', fromCity:'Hamburg', to:'LHR', toCity:'London', country:'uk', dep:'08:00', arr:'09:15', dur:'1h 15min', plane:'AV-101', stops:'Nonstop', eco:109.99, ecop:159.99, biz:349.99, ecoRet:64.99, ecopRet:94.99, bizRet:209.99 },
-    { id:6, from:'DUS', fromCity:'Düsseldorf', to:'SOF', toCity:'Sofia', country:'bulgaria', dep:'13:10', arr:'15:45', dur:'2h 35min', plane:'AV-218', stops:'Nonstop', eco:99.99, ecop:139.99, biz:299.99, ecoRet:59.99, ecopRet:89.99, bizRet:179.99 }
+  // FLIGHT DATABASE: ALL GERMANY -> TURKEY AIRPORTS (12 Türkei Airports + 9 Germany)
+  const TURKEY_AIRPORTS = [
+    { code:"IST", city:"Istanbul", region:"istanbul" }, { code:"SAW", city:"Istanbul Sabiha", region:"istanbul" }, { code:"ESB", city:"Ankara", region:"ankara" },
+    { code:"AYT", city:"Antalya", region:"antalia" }, { code:"ADB", city:"Izmir", region:"izmir" }, { code:"BJV", city:"Bodrum", region:"izmir" },
+    { code:"DLM", city:"Dalaman", region:"antalia" }, { code:"TZX", city:"Trabzon", region:"karadeniz" }, { code:"GZT", city:"Gaziantep", region:"guneydogu" },
+    { code:"ADA", city:"Adana", region:"akdeniz" }, { code:"KYS", city:"Kayseri", region:"ic anadolu" }, { code:"DNZ", city:"Denizli", region:"ege" }
   ];
-
-  let currentPendingBooking = null; // { route, classKey, priceOut, priceRet, pax, className }
-
-  function getJulySurcharge(dateVal) { if(!dateVal) return false; const m = new Date(dateVal).getMonth(); return m === 6; }
-  function getEffectivePrices(route, july) { if(!july) return { out: route.eco, ret: route.ecoRet, outPlus: route.ecop, retPlus: route.ecopRet, outBiz: route.biz, retBiz: route.bizRet };
-    return { out: 369.99, ret: 179.99, outPlus: 429.99, retPlus: 229.99, outBiz: 699.99, retBiz: 399.99 }; }
+  const GERMANY_AIRPORTS = ["FRA","MUC","BER","HAM","DUS","CGN","STR","HAJ","NUE"];
+  const CITY_NAMES = { FRA:"Frankfurt", MUC:"München", BER:"Berlin", HAM:"Hamburg", DUS:"Düsseldorf", CGN:"Köln", STR:"Stuttgart", HAJ:"Hannover", NUE:"Nürnberg" };
   
-  function buildFlightCard(r, july, pax, isResult=false) {
+  let ROUTES = [];
+  let idCounter = 1;
+  for(let g of GERMANY_AIRPORTS) {
+    for(let t of TURKEY_AIRPORTS) {
+      let baseEco = 99 + Math.floor(Math.random() * 80);
+      let baseEcoPlus = baseEco + 40;
+      let baseBiz = baseEco * 2.8;
+      ROUTES.push({
+        id: idCounter++, from: g, fromCity: CITY_NAMES[g], to: t.code, toCity: t.city, country: "turkey", region: t.region,
+        dep: `${Math.floor(Math.random()*12)+6}:${Math.random()>0.5?'00':'30'}`, arr: `${Math.floor(Math.random()*8)+12}:${Math.random()>0.5?'00':'30'}`,
+        dur: `${Math.floor(Math.random()*2)+2}h ${Math.floor(Math.random()*50)}min`, plane: `AV-${Math.floor(100+Math.random()*900)}`, stops: "Nonstop",
+        eco: parseFloat((baseEco + Math.random()*30).toFixed(2)), ecop: parseFloat((baseEcoPlus + Math.random()*20).toFixed(2)), biz: parseFloat((baseBiz + Math.random()*50).toFixed(2)),
+        ecoRet: parseFloat((baseEco*0.7 + Math.random()*20).toFixed(2)), ecopRet: parseFloat((baseEcoPlus*0.7 + Math.random()*15).toFixed(2)), bizRet: parseFloat((baseBiz*0.7 + Math.random()*40).toFixed(2))
+      });
+    }
+  }
+  // limit for performance, show first 30 representative routes
+  ROUTES = ROUTES.slice(0, 36);
+  
+  function getJulySurcharge(dateVal) { if(!dateVal) return false; const m = new Date(dateVal).getMonth(); return m === 6; }
+  function getEffectivePrices(route, july) { 
+    if(!july) return { out: route.eco, ret: route.ecoRet, outPlus: route.ecop, retPlus: route.ecopRet, outBiz: route.biz, retBiz: route.bizRet };
+    return { out: 369.99, ret: 179.99, outPlus: 429.99, retPlus: 229.99, outBiz: 699.99, retBiz: 399.99 }; 
+  }
+  
+  function buildFlightCard(r, july, pax) {
     const prices = getEffectivePrices(r, july);
-    const ecoOut = prices.out, ecoRet = prices.ret, ecopOut = prices.outPlus, ecopRet = prices.retPlus, bizOut = prices.outBiz, bizRet = prices.retBiz;
     const julyBadge = july ? '<span class="july-badge">🔥 Juli-Preis</span>' : '';
-    return `<div class="flight-card" data-country="${r.country}">
+    return `<div class="flight-card" data-region="${r.region}">
       <div class="airline-logo">✈</div>
       <div><div class="flight-times"><div class="time-block"><div class="time">${r.dep}</div><div class="airport">${r.from}</div></div><div class="flight-line"><div class="flight-duration">${r.dur}</div><div class="flight-line-bar"><div class="line-dot"></div><div class="line-dash"></div><span class="line-plane">✈</span><div class="line-dash"></div><div class="line-dot"></div></div><div class="flight-stop">${r.stops}</div></div><div class="time-block"><div class="time">${r.arr}</div><div class="airport">${r.to}</div></div></div><div class="flight-tags"><span class="ftag ftag-blue">✈ ${r.plane}</span>${julyBadge}</div></div>
       <div class="flight-class-badges">
-        <div class="class-badge" data-out="${ecoOut}" data-ret="${ecoRet}" data-class="Economy" data-key="eco" onclick="selectFlightAndShowBar(${r.id},'Economy',${ecoOut},${ecoRet},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')"><span class="class-name">Economy</span><span class="class-price">R$ ${ecoOut.toFixed(2)}</span></div>
-        <div class="class-badge" data-out="${ecopOut}" data-ret="${ecopRet}" data-class="Economy+" data-key="ecop" onclick="selectFlightAndShowBar(${r.id},'Economy+',${ecopOut},${ecopRet},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')"><span class="class-name">Economy+</span><span class="class-price">R$ ${ecopOut.toFixed(2)}</span></div>
-        <div class="class-badge" data-out="${bizOut}" data-ret="${bizRet}" data-class="Business" data-key="biz" onclick="selectFlightAndShowBar(${r.id},'Business',${bizOut},${bizRet},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')"><span class="class-name">Business</span><span class="class-price">R$ ${bizOut.toFixed(2)}</span></div>
+        <div class="class-badge" onclick="selectFlightAndShowBar(${r.id},'Economy',${prices.out},${prices.ret},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')"><span class="class-name">Economy</span><span class="class-price">R$ ${prices.out.toFixed(2)}</span></div>
+        <div class="class-badge" onclick="selectFlightAndShowBar(${r.id},'Economy+',${prices.outPlus},${prices.retPlus},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')"><span class="class-name">Economy+</span><span class="class-price">R$ ${prices.outPlus.toFixed(2)}</span></div>
+        <div class="class-badge" onclick="selectFlightAndShowBar(${r.id},'Business',${prices.outBiz},${prices.retBiz},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')"><span class="class-name">Business</span><span class="class-price">R$ ${prices.outBiz.toFixed(2)}</span></div>
       </div>
-      <button class="book-btn" onclick="selectFlightAndShowBar(${r.id},'Economy',${ecoOut},${ecoRet},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')">Buchen</button>
+      <button class="book-btn" onclick="selectFlightAndShowBar(${r.id},'Economy',${prices.out},${prices.ret},${pax},'${r.fromCity}','${r.toCity}','${r.dep}','${r.arr}')">Buchen</button>
     </div>`;
   }
-
-  function renderMainFlights(filter) { const g = document.getElementById('main-flights-grid'); let h=''; ROUTES.forEach(r=>{ if(filter==='all'||r.country===filter) h+=buildFlightCard(r, false, 1); }); g.innerHTML=h; }
+  
+  function renderMainFlights(filter) {
+    const grid = document.getElementById('main-flights-grid');
+    let html = '';
+    let filtered = ROUTES;
+    if(filter === 'istanbul') filtered = ROUTES.filter(r => r.region === 'istanbul');
+    else if(filter === 'antalia') filtered = ROUTES.filter(r => r.region === 'antalia');
+    else if(filter === 'izmir') filtered = ROUTES.filter(r => r.region === 'izmir');
+    filtered.slice(0,12).forEach(r => { html += buildFlightCard(r, false, 1); });
+    grid.innerHTML = html;
+  }
   renderMainFlights('all');
-  function filterMain(f,el){ document.querySelectorAll('.ffilter').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderMainFlights(f); }
-
-  // Search fix
+  function filterMain(f,el){ document.querySelectorAll('#flights .ffilter').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderMainFlights(f); }
+  
   function searchFlights() {
-    const from = document.getElementById('fromAirport').value, to = document.getElementById('toAirport').value, date = document.getElementById('departDate').value, pax = parseInt(document.getElementById('passengerCount').value)||1;
+    const from = document.getElementById('fromAirport').value, to = document.getElementById('toAirport').value;
+    const date = document.getElementById('departDate').value, pax = parseInt(document.getElementById('passengerCount').value)||1;
     const july = getJulySurcharge(date);
     let results = ROUTES.filter(r => (from?r.from===from:true) && (to?r.to===to:true));
-    if(results.length===0) results = ROUTES.slice(0,3);
-    const sr = document.getElementById('search-results'); const grid = document.getElementById('results-grid');
-    document.getElementById('results-title').innerHTML = `${from||'Jeder'} → ${to||'Jedes Ziel'}`;
-    let html=''; results.forEach(r=>{ html+=buildFlightCard(r, july, pax, true); });
-    grid.innerHTML=html; sr.style.display='block'; sr.scrollIntoView({behavior:'smooth'});
+    if(results.length===0) results = ROUTES.slice(0,8);
+    const sr = document.getElementById('search-results');
+    document.getElementById('results-title').innerHTML = `${from?CITY_NAMES[from]||from:'Deutschland'} → ${to||'Türkei'}`;
+    let html=''; results.forEach(r=>{ html+=buildFlightCard(r, july, pax); });
+    document.getElementById('results-grid').innerHTML = html;
+    sr.style.display='block'; sr.scrollIntoView({behavior:'smooth'});
   }
-
-  // SUNEXPRESS BAR LOGIC
+  
+  let currentPendingBooking = null;
   function selectFlightAndShowBar(routeId, className, priceOut, priceRet, pax, fromCity, toCity, dep, arr) {
     const route = ROUTES.find(r=>r.id===routeId);
     if(!route) return;
@@ -253,17 +305,14 @@
   function openBookingFromBar() {
     if(!currentPendingBooking) return;
     const b = currentPendingBooking;
-    const totalOut = b.priceOut, totalRet = b.priceRet;
     document.getElementById('modal-route').innerHTML = `${b.fromCity} → ${b.toCity}`;
-    document.getElementById('modal-details').innerHTML = `Hinflug: ${b.dep} · Rückflug (Standard) · ${b.className} · ${b.pax} Passagier(e)`;
-    window.currentBookingData = { pax: b.pax, priceOut: b.priceOut, priceRet: b.priceRet, className: b.className, fromCity: b.fromCity, toCity: b.toCity };
+    document.getElementById('modal-details').innerHTML = `Hinflug: ${b.dep} · Rückflug · ${b.className} · ${b.pax} Passagier(e)`;
+    window.currentBookingData = { pax: b.pax, priceOut: b.priceOut, priceRet: b.priceRet, className: b.className };
     updatePriceModal();
     document.getElementById('bookingModal').classList.add('show');
     document.getElementById('step1').classList.add('active'); document.getElementById('step2').classList.remove('active'); document.getElementById('step3').classList.remove('active');
     currentStepBooking=1;
-    updateStepUIBooking();
   }
-  
   let currentStepBooking = 1;
   function nextStep(n) {
     if(n===2 && (!document.getElementById('p-first').value || !document.getElementById('p-last').value || !document.getElementById('c-email').value)) { alert("Bitte Vor-, Nachname und E-Mail angeben."); return; }
@@ -271,9 +320,7 @@
     currentStepBooking = n;
     document.getElementById(`step${currentStepBooking}`).classList.add('active');
     if(n===2) updatePriceModal();
-    updateStepUIBooking();
   }
-  function updateStepUIBooking() { /* minimal UI, just step visibility */ }
   function updatePriceModal() {
     if(!window.currentBookingData) return;
     const b = window.currentBookingData;
@@ -292,16 +339,14 @@
   function completeBooking() { const ref = 'AV-'+Math.floor(100000+Math.random()*900000); document.getElementById('booking-ref').innerHTML=ref; nextStep(3); }
   function closeModal() { document.getElementById('bookingModal').classList.remove('show'); closeBookingBar(); }
   
-  // Slider
   let slideIndex=0; const slides=document.querySelectorAll('.slide'),dots=document.querySelectorAll('.dot');
   function goSlide(i){ slides[slideIndex]?.classList.remove('active'); dots[slideIndex]?.classList.remove('active'); slideIndex=i; slides[slideIndex]?.classList.add('active'); dots[slideIndex]?.classList.add('active'); }
   setInterval(()=>goSlide((slideIndex+1)%slides.length),5000);
   function setTab(el){ document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); }
   
-  // Additional fix: Airport selection (already functional)
   window.goSlide = goSlide; window.setTab = setTab; window.searchFlights = searchFlights; window.filterMain = filterMain; window.selectFlightAndShowBar = selectFlightAndShowBar; window.closeBookingBar = closeBookingBar;
   window.nextStep = nextStep; window.completeBooking = completeBooking; window.closeModal = closeModal; window.updatePriceModal = updatePriceModal;
 </script>
-<footer><div class="footer-grid"><div class="footer-brand"><div class="logo-icon">✈</div><div class="logo-text">Aviora<span>Airlines</span></div><p>Komfort & günstige Preise.</p></div><div class="footer-col"><h4>Service</h4><a href="#">Kontakt</a></div></div><div class="footer-bottom">&copy; AvioraAirlines 2026</div></footer>
+<footer><div class="footer-grid"><div class="footer-brand"><div class="logo-icon">✈</div><div class="logo-text">Aviora<span>Airlines</span></div><p>Alle Airports der Türkei & Deutschlands – nonstop verbunden.</p></div><div class="footer-col"><h4>Service</h4><a href="#">Kontakt</a><a href="#">Gepäck</a></div></div><div class="footer-bottom">&copy; AvioraAirlines 2026 – Türkei Spezialist</div></footer>
 </body>
 </html>
